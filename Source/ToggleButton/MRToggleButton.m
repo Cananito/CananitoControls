@@ -10,6 +10,7 @@
 
 @interface MRToggleButton ()
 
+@property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UIView *onView;
 @property (nonatomic, strong) UIView *offView;
 @property (nonatomic, strong) UILabel *onLabel;
@@ -41,6 +42,7 @@
     
     [super layoutSubviews];
     
+    self.containerView.frame = self.bounds;
     self.onView.frame = self.bounds;
     self.offView.frame = self.bounds;
     
@@ -134,8 +136,15 @@
     [self.offView addSubview:self.offLabel];
     [self.offView addGestureRecognizer:tapGestureRecognizer];
     
-    [self addSubview:self.onView];
-    [self addSubview:self.offView];
+    self.containerView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.containerView.clipsToBounds = YES;
+    self.containerView.userInteractionEnabled = YES;
+    self.containerView.backgroundColor = [UIColor clearColor];
+    self.containerView.opaque = NO;
+    
+    [self addSubview:self.containerView];
+    [self.containerView addSubview:self.onView];
+    [self.containerView addSubview:self.offView];
 }
 
 - (void)didTapOnView:(UITapGestureRecognizer *)tapGestureRecognizer {
